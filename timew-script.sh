@@ -14,20 +14,6 @@ if [ "$TERM" = "xterm-256color" ]; then
 	-set _MOTIF_WM_HINTS "0x2, 0x0, 0x0, 0x0, 0x0"
 fi
 
-#if (get_window_class()=="scripts") then
-#   set_opacity(0.95);
-#fi
-
-NONE='\033[00m'
-RED='\033[01;31m'
-GREEN='\033[01;32m'
-YELLOW='\033[01;33m'
-PURPLE='\033[01;35m'
-CYAN='\033[01;36m'
-WHITE='\033[01;37m'
-BOLD='\033[1m'
-UNDERLINE='\033[4m'
-
 COLOR_NC='\e[0m' # No Color
 COLOR_WHITE='\e[1;37m'
 COLOR_BLACK='\e[0;30m'
@@ -101,8 +87,7 @@ center_text()
 # center_text "Something I want to print" "=" 6
 while true
 do
-	clear
-	#setcolord
+	#clear
 	timew > tw.txt
 	center_text "$COLOR$(head -n 1 tw.txt)"
 	rm -r tw.txt

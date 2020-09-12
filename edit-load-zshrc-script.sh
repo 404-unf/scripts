@@ -1,3 +1,3 @@
 #!/usr/bin/env zsh
-gedit ~/.zshrc
+atom ~/.zshrc
 . ~/.zshrc

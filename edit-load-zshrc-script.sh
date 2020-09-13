@@ -1,3 +1,4 @@
 #!/usr/bin/env zsh
 atom ~/.zshrc
-. ~/.zshrc
+sleep 2
+source ~/.zshrc

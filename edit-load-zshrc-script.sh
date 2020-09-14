@@ -1,4 +1,4 @@
 #!/usr/bin/env zsh
-atom ~/.zshrc
+gedit ~/.zshrc
 sleep 2
 source ~/.zshrc

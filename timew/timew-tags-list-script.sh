@@ -1,4 +1,7 @@
 #!/usr/bin/env zsh
+
+clear
+
 echo -e "$UNDERLINE$GREEN TaskWarrior $NONE"
 echo -e "$CYAN Project.s\033[0m"
 echo -e "$WHITE            :: [yasdb] Work on database tutorial::db_tutorial. # \033[0m"

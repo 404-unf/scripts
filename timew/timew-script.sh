@@ -87,7 +87,7 @@ center_text()
 # center_text "Something I want to print" "=" 6
 while true
 do
-	#clear
+	clear
 	timew > tw.txt
 	center_text "$COLOR$(head -n 1 tw.txt)"
 	rm -r tw.txt

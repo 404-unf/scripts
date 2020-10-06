@@ -1,7 +1,7 @@
-#!/usr/bin/env zsh
+#!/usr/bin/env
 while true
 do
 	clear
 	timew
 	sleep 1
-done
+end

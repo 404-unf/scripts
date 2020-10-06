@@ -4,13 +4,16 @@ NOCOLOR='\033[00m'
 GREEN='\033[01;32m'
 DURATION=2
 
-BACKUP_DIR=/home/terra9/Storage/backup
+BACKUP_DIR_DEST=/home/terra9/Storage/backup
 ZSHRC_FILE_SOURCE=/home/terra9/.zshrc
 TIMEWARRIOR_DIR_SOURCE=/home/terra9/.timewarrior
-TASKWARRIOR_DIR_SOURCE
-TRILIUM_DATA_DIR_SOURCE
+TASKWARRIOR_DIR_SOURCE=/home/terra9/.task
+TRILIUM_DATA_DIR_SOURCE=/home/terra9/.local/share/trilium-data
+REMOTE_BACKUP_DIR_DEST=remote:backup
 
-protofunction(){
+DATE=$(date +%Y-%m-%d-%H%M%S)
+
+protoSync(){
     echo "$RED Removing the old FOLDER_NAME from local backup directory...$NOCOLOR"
     rm -r /home/terra9/Storage/backup/FOLDER_NAME
     echo "$GREEN Creating the directory FOLDER_NAME..$NOCOLOR"
@@ -24,55 +27,90 @@ protofunction(){
     sleep $DURATION
 }
 
-zshrcCopy(){
+zshrcSync(){
     echo "$RED Removing the old .zshrc from local backup directory...$NOCOLOR"
-    rm -r ${BACKUPDIR}/zshrc
-    echo "$GREEN Creating the directory zshrc..$NOCOLOR"
-    cd ${BACKUPDIR}
-    mkdir zshrc
+    rm -r ${BACKUP_DIR_DEST}/zshrc
+    echo "$GREEN Creating the directory zshrc...$NOCOLOR"
+    cd ${BACKUP_DIR_DEST}
+    mkdir zshrc && cd zshrc
     echo "$GREEN Started copying .zshrc...$NOCOLOR"
-    rclone sync -P ${ZSHRCSOURCE} ${BACKUPDIR}/zshrc/
+    rclone sync -P ${ZSHRC_FILE_SOURCE} -L .
     echo "$GREEN Done copying .zshrc.$NOCOLOR"
     echo ""
     echo ""
     sleep $DURATION
 }
 
-timewarrior(){
+zsh_historySync(){
+    echo "$RED Removing the old .zshrc from local backup directory...$NOCOLOR"
+    rm -r ${BACKUP_DIR_DEST}/zsh_history
+    echo "$GREEN Creating the directory zsh_history...$NOCOLOR"
+    cd ${BACKUP_DIR_DEST}
+    mkdir zsh_history && cd zsh_history
+    echo "$GREEN Started copying .zsh_history...$NOCOLOR"
+    rclone sync -P ${HOME}/.zsh_history -L .
+    echo "$GREEN Done copying .zsh_history.$NOCOLOR"
+    echo ""
+    echo ""
+    sleep $DURATION
+}
+
+oh-my-zshSync(){
+    echo "$RED Removing the old .oh-my-zsh from local backup directory...$NOCOLOR"
+    rm -r ${BACKUP_DIR_DEST}/oh-my-zsh
+    echo "$GREEN Creating the directory oh-my-zsh...$NOCOLOR"
+    cd ${BACKUP_DIR_DEST}
+    mkdir oh-my-zsh && cd oh-my-zsh
+    mkdir .oh-my-zsh && cd .oh-my-zsh
+    echo "$GREEN Started copying .oh-my-zsh...$NOCOLOR"
+    rclone sync -P ${HOME}/.oh-my-zsh -L .
+    echo "$GREEN Done copying .oh-my-zsh.$NOCOLOR"
+    echo "$GREEN Now creating the tarball...$NOCOLOR"
+    cd ..
+    tar -cvzpf ${HOME}/Storage/tar_backup/backup_$DATE.tar.gz .
+    echo "$GREEN Tar ball is created.$NOCOLOR"
+    echo ""
+    echo ""
+    sleep $DURATION
+}
+
+timewarriorSync(){
     echo "$RED Removing the old .timewarrior from local backup directory...$NOCOLOR"
-    rm -r ${BACKUPDIR}/timewarrior
+    rm -r ${BACKUP_DIR_DEST}/timewarrior
     echo "$GREEN Creating the directory timewarrior...$NOCOLOR"
-    cd ${BACKUPDIR}
+    cd ${BACKUP_DIR_DEST}
     mkdir timewarrior && cd timewarrior
-    mkdir .timewarrior
+    mkdir .timewarrior && cd .timewarrior
     echo "$GREEN Started copying .timewarrior...$NOCOLOR"
-    rclone copy -P /home/terra9/.timewarrior ${BACKUPDIR}/timewarrior/.timewarrior
+    rclone sync -P ${TIMEWARRIOR_DIR_SOURCE} .
     echo "$GREEN Done copying .timewarrior.$NOCOLOR"
     echo ""
     echo ""
     sleep $DURATION
 }
 
-taskwarrior(){
+taskwarriorSync(){
     echo "$RED Removing the old .task from local backup directory...$NOCOLOR"
-    rm -r ${BACKUPDIR}/taskwarrior
+    rm -r ${BACKUP_DIR_DEST}/taskwarrior
     echo "$GREEN Creating the directory taskwarrior$NOCOLOR"
-    cd ${BACKUPDIR}
+    cd ${BACKUP_DIR_DEST}
     mkdir taskwarrior && cd taskwarrior
-    mkdir .taskwarrior
+    mkdir .taskwarrior && cd .taskwarrior
     echo "$GREEN Started copying .task...$NOCOLOR"
-    rclone copy -P /home/terra9/.task        ${BACKUPDIR}/taskwarrior/.taskwarrior
+    rclone sync -P ${TASKWARRIOR_DIR_SOURCE} .
     echo "$GREEN Done copying .task.$NOCOLOR"
     echo ""
     echo ""
     sleep $DURATION
 }
 
-trilium-notes(){
+triliumNotesSync(){
     echo "$RED Removing the old trilium-data folder from local backup directory...$NOCOLOR"
-    rm -r ${BACKUPDIR}/trilium-data
+    rm -r ${BACKUP_DIR_DEST}/trilium-data
+    cd ${BACKUP_DIR_DEST}
+    mkdir trilium-data && cd trilium-data
     echo "$GREEN Started copying trilium-data...$NOCOLOR"
-    rclone copy /home/terra9/.local/share/trilium-data ${BACKUPDIR}/trilium-data -P
+    rclone sync ${TRILIUM_DATA_DIR_SOURCE} . -P
     echo "$GREEN Done copying trilium-data.$NOCOLOR"
     echo ""
     echo ""
@@ -84,9 +122,25 @@ rcloneSync(){
     echo ""
     sleep $DURATION
     echo "$GREEN Moving into Local backup directory...$NOCOLOR"
-    cd ${BACKUPDIR}
+    cd ${BACKUP_DIR_DEST}
+    echo "$GREEN Syncing remote:backup.7 to remote:backup.8...$NOCOLOR"
+    rclone sync remote:backup.7 remote:backup.8 -P -L
+    echo "$GREEN Syncing remote:backup.6 to remote:backup.7...$NOCOLOR"
+    rclone sync remote:backup.6 remote:backup.7 -P -L
+    echo "$GREEN Syncing remote:backup.5 to remote:backup.6...$NOCOLOR"
+    rclone sync remote:backup.5 remote:backup.6 -P -L
+    echo "$GREEN Syncing remote:backup.4 to remote:backup.5...$NOCOLOR"
+    rclone sync remote:backup.4 remote:backup.5 -P -L
+    echo "$GREEN Syncing remote:backup.3 to remote:backup.4...$NOCOLOR"
+    rclone sync remote:backup.3 remote:backup.4 -P -L
+    echo "$GREEN Syncing remote:backup.2 to remote:backup.3...$NOCOLOR"
+    rclone sync remote:backup.2 remote:backup.3 -P -L
+    echo "$GREEN Syncing remote:backup.1 to remote:backup.2...$NOCOLOR"
+    rclone sync remote:backup.1 remote:backup.2 -P -L
+    echo "$GREEN Syncing remote:backup   to remote:backup.1...$NOCOLOR"
+    rclone sync remote:backup remote:backup.1 -P -L
     echo "$GREEN Syncing the remote backup directory with local backup directory on Google Drive... data on remote is being modified...$NOCOLOR"
-    rclone sync . remote:backup -P -L
+    rclone sync . ${REMOTE_BACKUP_DIR_DEST} -P -L
     echo "$GREEN Done syncing the remote backup directory with local backup directory.$NOCOLOR"
     echo ""
     sleep $DURATION
@@ -101,4 +155,11 @@ driveQuota(){
     rclone about remote:
 }
 
-zshrcCopy
+zshrcSync
+oh-my-zshSync
+zsh_historySync
+#timewarriorSync
+#taskwarriorSync
+#triliumNotesSync
+rcloneSync
+driveQuota

@@ -155,11 +155,25 @@ driveQuota(){
     rclone about remote:
 }
 
-zshrcSync
-oh-my-zshSync
-zsh_historySync
+##zshrcSync
+#oh-my-zshSync
+#zsh_historySync
 #timewarriorSync
 #taskwarriorSync
 #triliumNotesSync
-rcloneSync
-driveQuota
+# rcloneSync
+# driveQuota
+echo "$GREEN Syncing remote:backup-sync.3 to remote:backup-sync.4...$NOCOLOR"
+rclone sync -P -L remote:backup-sync.3 remote:backup-sync.4
+
+echo "$GREEN Syncing remote:backup-sync.2 to remote:backup-sync.3...$NOCOLOR"
+rclone sync -P -L remote:backup-sync.2 remote:backup-sync.3
+
+echo "$GREEN Syncing remote:backup-sync.1 to remote:backup-sync.2...$NOCOLOR"
+rclone sync -P -L remote:backup-sync.1 remote:backup-sync.2
+
+echo "$GREEN Syncing remote:backup-sync to remote:backup-sync.1...$NOCOLOR"
+rclone sync -P -L remote:backup-sync remote:backup-sync.1
+
+echo "$GREEN Syncing latest backintime snapshot to remote:backup-sync...$NOCOLOR"
+rclone sync -P -L $1 remote:backup-sync/latest-backintime-backup --multi-thread-streams 0

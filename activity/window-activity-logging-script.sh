@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-waittime="2"
+waittime="10"
 
 previousWindowName=""
 

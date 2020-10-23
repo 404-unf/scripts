@@ -16,7 +16,8 @@ do
 		echo "$time"
 		echo "$VAR"
 		echo ""
-		notify-send-all.sh -t 10000 "Battery Status" "$VAR"
+		# notify-send-all.sh -t 2000 "Battery Status" "$VAR"
+		notify-send-all.sh -t 3000 "$VAR"
 	fi
 	sleep "$waittime"
 done

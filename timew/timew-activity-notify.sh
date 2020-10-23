@@ -7,7 +7,8 @@ while true
 do
 	date
 	timew > tw.txt
-	notify-send-all.sh -t 10000 "Currently Tracking" "$(head -n 1 tw.txt)"
+	# notify-send-all.sh -t 2000 "Currently Tracking" "$(head -n 1 tw.txt)"
+	notify-send-all.sh -t 3000 "$(head -n 1 tw.txt)"
 	data=$(timew)
 	echo "   $data"
 	echo ""

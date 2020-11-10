@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-waittime="1200"
+waittime="1000"
 
 clear
 

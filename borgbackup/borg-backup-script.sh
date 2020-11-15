@@ -2,7 +2,7 @@
 
 # Setting this, so the repo does not need to be given on the commandline:
 # export BORG_REPO=/home/terra9/backup/demoborgbackupscript
-export BORG_REPO=/home/terra9/backup/borgbackup
+export BORG_REPO=/run/media/terra9/backup/borgbackup
 
 # See the section "Passphrase notes" for more infos.
 export BORG_PASSPHRASE='borgbackup'
@@ -17,7 +17,7 @@ info "Starting backup"
 # the machine this script is currently running on:
 
 borg create                         \
-    --list                          \
+    --verbose                          \
     --stats                         \
     --progress                      \
     --show-rc                       \
@@ -35,10 +35,22 @@ borg create                         \
     --exclude '/home/terra9/.rustup/*'   \
     --exclude '/home/terra9/github-clones/*'   \
     --exclude '/home/terra9/.cargo/*'   \
+    --exclude '/home/terra9/.xdman/*'   \
     --exclude '/home/terra9/backup/*'   \
-                                    \
-    ::'{hostname}-{now}'            \
-    /home/terra9/                           \
+    --exclude '/root/.npm/*'   \
+    --exclude '/root/.gem/*'   \
+    --exclude '/home/terra9/.config/Atom/*'   \
+    --exclude '/home/terra9/.config/Code/*'   \
+    --exclude '/home/terra9/.config/google-chrome/*'   \
+                                     \
+    ::'{hostname}-{now}'             \
+    /home/                           \
+    /usr/local/                      \
+    /opt/                            \
+    /var/lib/                        \
+    /var/log/                        \
+    /etc/                            \
+    /root/                           \
     
 
 backup_exit=$?

@@ -1,6 +1,6 @@
 #!/usr/bin/env zsh
 
-waittime="1000"
+waittime="600"
 
 clear
 
@@ -17,7 +17,7 @@ do
 		echo "$VAR"
 		echo ""
 		# notify-send-all.sh -t 2000 "Battery Status" "$VAR"
-		notify-send-all.sh -t 3000 "$VAR"
+		notify-send-all.sh -t 5000 "$VAR"
 	fi
 	sleep "$waittime"
 done

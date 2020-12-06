@@ -12,3 +12,4 @@ yakuake-session --hold --workdir ~/storage/projects/scripts/battery/ -t "battery
 # yakuake-session --hold --workdir ~/storage/projects/scripts/timew/ -t "timew-notify" -e ./timew-activity-notify.sh
 yakuake-session --hold --workdir ~/storage/projects/scripts/uptime/ -t "uptime" -e ./system-uptime-script.sh
 yakuake-session --hold -t "pomodoro" -e pomodoro-sh.sh
+yakuake-session --hold -t "pomodoro-companion" -e pomodoro-companion-sh.sh
